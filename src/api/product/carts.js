@@ -24,4 +24,8 @@ export default {
       quantity: quantity,
     });
   },
+
+  deleteCart(cartId) {
+    return this.http(this.baseUrl).delete(`${this.url}/${cartId}`);
+  },
 };

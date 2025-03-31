@@ -16,6 +16,7 @@
               control-variant="split"
               inset
               :model-value="item.quantity"
+              :min="0"
               @update:model-value="
                 (value) => {
                   item.quantity = value;
@@ -25,7 +26,7 @@
             />
           </td>
           <td>
-            <v-btn color="red" variant="text" @click="removeItem(item.id)">
+            <v-btn color="red" variant="text" @click="deleteCart(item.id)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </td>
@@ -62,7 +63,17 @@ export default {
     },
 
     updateCart: _.debounce(async function (cartId, productId, quantity) {
-      await carts.updateCart(cartId, productId, quantity);
+      if (quantity < 1) {
+        this.deleteCart(cartId);
+      } else {
+        await carts.updateCart(cartId, productId, quantity);
+      }
+    }, 1000),
+
+    deleteCart: _.debounce(async function (cartId) {
+      await carts.deleteCart(cartId).then(() => {
+        this.items = this.items.filter((item) => item.id !== cartId);
+      });
     }, 1000),
   },
 };

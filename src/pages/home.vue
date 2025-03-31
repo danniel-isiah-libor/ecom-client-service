@@ -17,7 +17,12 @@
         <v-row justify="center">
           <v-col cols="8">
             <v-container class="max-width">
-              <v-pagination v-model="page" :length="15" class="my-4" />
+              <v-pagination
+                v-model="page"
+                :length="totalItems"
+                class="my-4"
+                :total-visible="5"
+              />
             </v-container>
           </v-col>
         </v-row>
@@ -42,14 +47,26 @@ export default {
   data() {
     return {
       items: [],
+      totalItems: 0,
     };
   },
+  watch: {
+    page() {
+      this.fetch();
+    },
+  },
   async created() {
-    await products.getProducts().then((response) => {
-      const data = response.data;
+    await this.fetch();
+  },
+  methods: {
+    async fetch() {
+      await products.getProducts(this.page).then((response) => {
+        const data = response.data;
 
-      this.items = data.data;
-    });
+        this.items = data.data;
+        this.totalItems = data.last_page;
+      });
+    },
   },
 };
 </script>

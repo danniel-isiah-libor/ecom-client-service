@@ -7,7 +7,7 @@ export default {
   url: "api/products",
   http,
 
-  getProducts() {
-    return this.http(this.baseUrl).post(this.url);
+  getProducts(page = 1) {
+    return this.http(this.baseUrl).post(`${this.url}/?page=${page}`);
   },
 };

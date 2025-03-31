@@ -17,4 +17,11 @@ export default {
   getCart() {
     return this.http(this.baseUrl).get(this.url);
   },
+
+  updateCart(cartId, productId, quantity) {
+    return this.http(this.baseUrl).put(`${this.url}/${cartId}`, {
+      product_id: productId,
+      quantity: quantity,
+    });
+  },
 };

@@ -19,6 +19,7 @@
               @update:model-value="
                 (value) => {
                   item.quantity = value;
+                  updateCart(item.id, item.product_id, value);
                 }
               "
             />
@@ -37,6 +38,7 @@
 <script>
 import { VNumberInput } from "vuetify/labs/VNumberInput";
 import carts from "@/api/product/carts.js";
+import _ from "lodash";
 
 export default {
   components: {
@@ -46,14 +48,6 @@ export default {
     return {
       items: [],
     };
-  },
-  watch: {
-    items: {
-      handler(newItems) {
-        console.log(newItems);
-      },
-      deep: true,
-    },
   },
   async created() {
     await this.fetch();
@@ -66,6 +60,10 @@ export default {
         this.items = data;
       });
     },
+
+    updateCart: _.debounce(async function (cartId, productId, quantity) {
+      await carts.updateCart(cartId, productId, quantity);
+    }, 1000),
   },
 };
 </script>

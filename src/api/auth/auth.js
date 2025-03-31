@@ -13,5 +13,10 @@ const http = (baseUrl) => {
 };
 
 export default {
-  //
+  baseUrl: "http://localhost:8000",
+  endpoint: "/api",
+
+  login(params) {
+    return http(this.baseUrl).post(`${this.endpoint}/login`, params);
+  },
 };

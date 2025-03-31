@@ -5,10 +5,10 @@ export default {
     const http = axios.create({ baseURL: baseUrl });
 
     http.interceptors.request.use((config) => {
-      const token = "";
+      const token = JSON.parse(localStorage.getItem("auth"));
 
       config.headers.Accept = "application/json";
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token.access_token}`;
 
       return config;
     });

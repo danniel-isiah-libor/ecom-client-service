@@ -9,6 +9,19 @@
 
       <div class="text-center text-caption">
         Price: {{ item.price }} Stock: {{ item.stock }}
+
+        <br />
+
+        <hr />
+
+        <v-btn
+          class="mt-2"
+          color="primary"
+          variant="tonal"
+          rounded
+          text="Add to Cart"
+          @click="addToCart(item.id)"
+        />
       </div>
     </v-col>
 
@@ -33,6 +46,7 @@
 
 <script>
 import products from "@/api/product/products.js";
+import carts from "@/api/product/carts.js";
 import { ref } from "vue";
 
 export default {
@@ -65,6 +79,12 @@ export default {
 
         this.items = data.data;
         this.totalItems = data.last_page;
+      });
+    },
+
+    async addToCart(productId) {
+      await carts.addToCart(productId).then(() => {
+        alert("Product added to cart");
       });
     },
   },

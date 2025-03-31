@@ -1,64 +1,54 @@
 <template>
   <v-row>
-    <v-col cols="12" md="4">
+    <v-col v-for="item in items" :key="item.id" cols="12" md="4">
       <v-card
-        subtitle="This is a card subtitle"
-        text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus!"
-        title="This is a title"
+        :subtitle="item.sku"
+        :text="item.description"
+        :title="item.name"
       />
 
-      <div class="text-center text-caption">Using Props Only</div>
+      <div class="text-center text-caption">
+        Price: {{ item.price }} Stock: {{ item.stock }}
+      </div>
     </v-col>
 
-    <v-col cols="12" md="4">
-      <v-card>
-        <template #title> This is a title </template>
-
-        <template #subtitle> This is a card subtitle </template>
-
-        <template #text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,
-          ratione debitis quis est labore voluptatibus!
-        </template>
-      </v-card>
-
-      <div class="text-center text-caption">Using Slots Only</div>
-    </v-col>
-
-    <v-col cols="12" md="4">
-      <v-card>
-        <v-card-item>
-          <v-card-title>This is a title</v-card-title>
-
-          <v-card-subtitle>This is a card subtitle</v-card-subtitle>
-        </v-card-item>
-
-        <v-card-text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,
-          ratione debitis quis est labore voluptatibus!
-        </v-card-text>
-      </v-card>
-
-      <div class="text-center text-caption">Using Markup Only</div>
-    </v-col>
+    <div class="text-center">
+      <v-container>
+        <v-row justify="center">
+          <v-col cols="8">
+            <v-container class="max-width">
+              <v-pagination v-model="page" :length="15" class="my-4" />
+            </v-container>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
   </v-row>
 </template>
 
 <script>
 import products from "@/api/product/products.js";
+import { ref } from "vue";
 
 export default {
   name: "Home",
+  setup() {
+    const page = ref(1);
+
+    return {
+      page,
+    };
+  },
   data() {
     return {
-      //
+      items: [],
     };
   },
   async created() {
     await products.getProducts().then((response) => {
       const data = response.data;
 
-      console.log(data);
+      this.items = data.data;
     });
   },
 };

@@ -13,4 +13,8 @@ export default {
       quantity: quantity,
     });
   },
+
+  getCart() {
+    return this.http(this.baseUrl).get(this.url);
+  },
 };

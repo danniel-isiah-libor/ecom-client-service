@@ -89,6 +89,8 @@ export default {
           ).toISOString();
 
           localStorage.setItem("auth", JSON.stringify(data));
+
+          window.location.href = "/home";
         })
         .catch()
         .finally();
